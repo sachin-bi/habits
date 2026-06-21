@@ -1,4 +1,391 @@
+# Habit Tracker KMP
+
+A modern **Kotlin Multiplatform (KMP)** Habit Tracking application built using **Compose Multiplatform**, **Voyager Navigation**, **Koin Dependency Injection**, and a **Clean Architecture + MVVM** approach.
+
+The project shares business logic, state management, and UI across Android and iOS while allowing platform-specific implementations when required.
+
+---
+
+## 📱 Features
+
+* Create and manage habits
+* Daily habit tracking
+* Weekly progress visualization
+* Clean and scalable architecture
+* Shared UI for Android & iOS
+* Dependency Injection with Koin
+* Navigation using Voyager
+* Local persistence using SQLDelight/Room
+* Kotlin Multiplatform support
+
+---
+
+## 🏗️ Architecture
+
+The project follows:
+
+* **Clean Architecture**
+* **MVVM Pattern**
+* **Repository Pattern**
+* **Use Case Driven Business Logic**
+* **Dependency Injection (Koin)**
+* **Voyager ScreenModel**
+
+```
+Presentation Layer
+        │
+        ▼
+    Use Cases
+        │
+        ▼
+ Repository Interface
+        │
+        ▼
+ Repository Implementation
+        │
+        ▼
+ Database / Local Storage
+```
+
+---
+
+## 📂 Project Structure
+
+```
+composeApp/src/
+
+├── commonMain/
+│   ├── di/
+│   ├── domain/
+│   ├── data/
+│   └── presentation/
+│
+├── androidMain/
+│   ├── database/
+│   ├── di/
+│   └── MainActivity.kt
+│
+└── iosMain/
+    ├── database/
+    ├── di/
+    └── MainViewController.kt
+```
+
+---
+
+## 📦 Layer Breakdown
+
+### Domain Layer
+
+Contains pure business logic and has no dependency on frameworks.
+
+#### Models
+
+```kotlin
+Habit.kt
+HabitLog.kt
+```
+
+#### Repository Contracts
+
+```kotlin
+HabitRepository.kt
+```
+
+#### Use Cases
+
+```kotlin
+ObserveHabitsUseCase.kt
+ToggleHabitUseCase.kt
+```
+
+Responsibilities:
+
+* Business rules
+* Data contracts
+* Application use cases
+
+---
+
+### Data Layer
+
+Handles data storage and repository implementations.
+
+#### Database
+
+```kotlin
+DatabaseDriverFactory.kt
+HabitDatabase.sq
+```
+
+#### Repository Implementation
+
+```kotlin
+HabitRepositoryImpl.kt
+```
+
+#### Mappers
+
+```kotlin
+HabitMapper.kt
+```
+
+Responsibilities:
+
+* Database communication
+* Entity mapping
+* Repository implementation
+
+---
+
+### Presentation Layer
+
+Contains all shared Compose UI.
+
+#### Theme
+
+```kotlin
+Color.kt
+Typography.kt
+AppTheme.kt
+```
+
+#### Components
+
+Reusable UI components:
+
+```kotlin
+HabitRowItem.kt
+WeeklyCalendarGrid.kt
+```
+
+#### Screens
+
+Each feature contains:
+
+```kotlin
+Screen
+ScreenModel
+UiState
+```
+
+Example:
+
+```
+daily/
+├── DailyTrackerScreen.kt
+├── DailyTrackerScreenModel.kt
+└── DailyTrackerUiState.kt
+```
+
+Responsibilities:
+
+* UI rendering
+* State management
+* User interactions
+
+---
+
+## 🔄 State Flow
+
+```
+UI
+ ↓
+ScreenModel
+ ↓
+Use Case
+ ↓
+Repository
+ ↓
+Database
+ ↓
+Repository
+ ↓
+ScreenModel
+ ↓
+UI State Update
+```
+
+---
+
+## 🧩 Dependency Injection
+
+Koin is used for dependency management.
+
+### Shared Modules
+
+```kotlin
+KoinModules.kt
+```
+
+Registers:
+
+* Repositories
+* Use Cases
+* ScreenModels
+
+### Platform Modules
+
+Android:
+
+```kotlin
+androidMain/di/ActualModule.kt
+```
+
+iOS:
+
+```kotlin
+iosMain/di/ActualModule.kt
+```
+
+---
+
+## 🧭 Navigation
+
+Voyager is used for navigation.
+
+Example:
+
+```kotlin
+Navigator(DailyTrackerScreen())
+```
+
+Each screen implements:
+
+```kotlin
+Screen
+```
+
+and its corresponding
+
+```kotlin
+ScreenModel
+```
+
+for business logic.
+
+---
+
+## 💾 Database
+
+The application supports local persistence using:
+
+### Option 1: SQLDelight (Recommended)
+
+Benefits:
+
+* Shared database code
+* Type-safe SQL
+* Android + iOS support
+
+### Option 2: Room (Android only)
+
+Suitable if iOS persistence is not required.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+* Android Studio Narwhal or newer
+* Kotlin 2.x
+* JDK 17+
+* Xcode (for iOS)
+* CocoaPods (if required)
+
+---
+
+### Clone Project
+
+```bash
+git clone https://github.com/yourusername/habit-tracker-kmp.git
+
+cd habit-tracker-kmp
+```
+
+---
+
+### Run Android
+
+```bash
+./gradlew :composeApp:installDebug
+```
+
+or directly from Android Studio.
+
+---
+
+### Run iOS
+
+Open:
+
+```bash
+iosApp/iosApp.xcodeproj
+```
+
+Run the project from Xcode Simulator.
+
+---
+
+## 🛠️ Tech Stack
+
+| Category         | Technology            |
+| ---------------- | --------------------- |
+| Language         | Kotlin                |
+| UI               | Compose Multiplatform |
+| Architecture     | Clean Architecture    |
+| DI               | Koin                  |
+| Navigation       | Voyager               |
+| Database         | SQLDelight            |
+| Async            | Kotlin Coroutines     |
+| Reactive Streams | Flow                  |
+| State Management | StateFlow             |
+| Platform Support | Android, iOS          |
+
+---
+
+## 📈 Future Enhancements
+
+* Habit reminders
+* Streak tracking
+* Monthly analytics
+* Cloud synchronization
+* Dark mode customization
+* Wear OS support
+* Widget support
+* AI-powered habit suggestions
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome.
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit changes
+4. Push the branch
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 👨‍💻 Author
+
+Built with Kotlin Multiplatform, Compose Multiplatform, and Clean Architecture principles.
+
+
+---
+
 This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop (JVM).
+
+
 
 * [/iosApp](./iosApp/iosApp) contains an iOS application. Even if you’re sharing your UI with Compose Multiplatform,
   you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
